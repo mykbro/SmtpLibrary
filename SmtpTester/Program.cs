@@ -9,18 +9,24 @@ namespace SmtpTester
 	{
 		static void Main(string[] args)
 		{
-			int numSenders = 3;
+			//## config data
+			int numSenders = 3;		//the number of concurrent requests we want to simulate
 			
-			string myEmailAddress = "";
-			string password = "";
-			string host = "";
-			string recipientEmailAddress = "";
-			
-			SmtpClientFactory fact = new SmtpClientFactory(host, 587, true, myEmailAddress, password!);
-			SmtpClientPoolSender smtpPool = new SmtpClientPoolSender(fact, 0, 3);
+			string myEmailAddress = "mymail@mydomain.com";
+			string password = "1234";
+			string host = "smtp.blablabla.com";
+			string recipientEmailAddress = "anothermail@anotherdomain.com";
+			int poolStartingSize = 0;
+            int poolMaxSize = 3;
 
-			string subject = "Prova prova";
-			string body = "<html><body><h1>AIUTOOOO</h1></body></html>";
+            string subject = "Prova prova";
+            string body = "<html><body><h1>AIUTOOOO</h1></body></html>";
+			
+			//
+
+            SmtpClientFactory fact = new SmtpClientFactory(host, 587, true, myEmailAddress, password);
+			SmtpClientPoolSender smtpPool = new SmtpClientPoolSender(fact, poolStartingSize, poolMaxSize);
+			
 			MailMsgFactory msgFactory = new MailMsgFactory(new MailAddress(myEmailAddress), subject, body, true);
 
 			Task[] tasks = new Task[numSenders];
